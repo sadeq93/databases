@@ -17,13 +17,14 @@ function run_mysql_query(mySQL_Command) {
   });
 }
 
-run_mysql_query('SELECT Name FROM country WHERE Population > 8000000');
-run_mysql_query('SELECT Name FROM country WHERE name LIKE "%land%"');
-run_mysql_query('SELECT Name FROM country WHERE Population BETWEEN 500000 AND 1000000');
-run_mysql_query('SELECT Name FROM country ORDER BY SurfaceArea DESC');
-run_mysql_query('SELECT Name FROM City where CountryCode = "NLD"');
-run_mysql_query('SELECT Population FROM City where Name = "Rotterdam"');
-run_mysql_query('SELECT Name FROM country ORDER BY SurfaceArea DESC LIMIT 10');
-run_mysql_query('SELECT Name FROM country ORDER BY Population DESC LIMIT 10');
-run_mysql_query('SELECT Population FROM country ORDER BY Population DESC LIMIT 1');
+run_mysql_query('SELECT Name FROM country WHERE Population > 8000000;');                    //1
+run_mysql_query('SELECT Name FROM country WHERE name LIKE "%land%";');                      //2
+run_mysql_query('SELECT Name FROM country WHERE Population BETWEEN 500000 AND 1000000;');   //3
+run_mysql_query('SELECT Name FROM country WHERE Continent = "Europe";');                    //4
+run_mysql_query('SELECT Name FROM country ORDER BY SurfaceArea DESC;');                     //5
+run_mysql_query('SELECT Name FROM City where CountryCode = "NLD";');                        //6
+run_mysql_query('SELECT Population FROM City where Name = "Rotterdam";');                   //7
+run_mysql_query('SELECT Name FROM country ORDER BY SurfaceArea DESC LIMIT 10;');            //8
+run_mysql_query('SELECT Name FROM country ORDER BY Population DESC LIMIT 10;');             //9
+run_mysql_query('SELECT sum(Population) AS population_world FROM country;');                //10
 db.end();
