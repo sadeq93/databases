@@ -9,13 +9,14 @@ const CONNECTION_CONFIG = {
 };
 
 async function seedDatabase() {
-    const  self_Join_query =
+    const  selectAuthorsAndCollaborators =
     `SELECT auth.author_name AS authors , coll.author_name AS collaborators
     FROM authors AS auth 
     JOIN authors AS coll 
     ON auth.collaborator = coll.author_no;`;
     
-    const many_to_many = `SELECT authors.author_name  AS author, Research_Papers.paper_title AS Research_Paper
+    const selectAuthorsAndPaper = `
+    SELECT authors.author_name  AS author, Research_Papers.paper_title AS Research_Paper
     from authors 
     LEFT JOIN  author_paper
     ON authors.author_no = author_paper.author_id
@@ -26,11 +27,11 @@ async function seedDatabase() {
     const execQuery = util.promisify(connection.query.bind(connection));
 
     try {
-        const selfJoinQuery = await execQuery(self_Join_query);
-        const manyToMany = await execQuery(many_to_many);
-        console.table(selfJoinQuery);
-        console.table(manyToMany);
-        connection.end();
+      const select_authors_collaborators = await execQuery(selectAuthorsAndCollaborators);
+      const selec_authors_paper = await execQuery(selectAuthorsAndPaper);
+      console.table(select_authors_collaborators);
+      console.table(selec_authors_paper);
+      connection.end();
     } catch (err) {
       console.error(err.message);
       connection.end();

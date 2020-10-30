@@ -9,7 +9,7 @@ const CONNECTION_CONFIG = {
 };
 
 async function seedDatabase() {
-    const create_Authors_table =` 
+    const createAuthorsTable =` 
         CREATE TABLE IF NOT EXISTS Authors (
         author_no int NOT NULL AUTO_INCREMENT,
         author_name VARCHAR(55) NOT NULL,
@@ -20,7 +20,7 @@ async function seedDatabase() {
         PRIMARY KEY (author_no)
         );`;
 
-    const add_Collaborator_column = `
+    const addCollaboratorColumn = `
         ALTER TABLE authors
         ADD Collaborator INT,
         ADD CONSTRAINT FOREIGN KEY(Collaborator) REFERENCES authors(author_no);`;
@@ -29,8 +29,8 @@ async function seedDatabase() {
     const execQuery = util.promisify(connection.query.bind(connection));
 
     try {
-         await execQuery(create_Authors_table);
-         await execQuery(add_Collaborator_column);
+         await execQuery(createAuthorsTable);
+         await execQuery(addCollaboratorColumn);
       connection.end();
     } catch (err) {
       console.error(err.message);

@@ -9,7 +9,7 @@ const CONNECTION_CONFIG = {
 };
 
 async function seedDatabase() {
-    const create_Research_Papers_table = `
+    const createResearchPapersTable = `
         CREATE TABLE IF NOT EXISTS Research_Papers (
         id INT PRIMARY KEY auto_increment, 
         paper_title VARCHAR(50)NOT NULL UNIQUE ,
@@ -18,17 +18,17 @@ async function seedDatabase() {
     
     // the relationship between Authors and Research papers is Many-To-Many
     
-    const CREATE_author_paper_table = `  
+    const createAuthorPaperTable = `  
         CREATE TABLE IF NOT EXISTS author_paper (
-        id INT PRIMARY KEY AUTO_INCREMENT,
         author_id INT NOT NULL ,
         paper_id INT NOT NULL,
         index(author_id),
         index(paper_id),
         FOREIGN KEY(author_id) REFERENCES Authors(author_no),
-        FOREIGN KEY(paper_id) REFERENCES Research_Papers(id)
+        FOREIGN KEY(paper_id) REFERENCES Research_Papers(id),
+        PRIMARY KEY (author_id,paper_id)
         );`;
-    const insert_authors_values = `
+    const insertAuthorsValues = `
     INSERT INTO Authors
     (author_name,university,date_of_birth,h_index,gender)
     VALUES
@@ -48,7 +48,7 @@ async function seedDatabase() {
     ("Isabella" , "University of Alabama"                    , "1985-05-03", 1.8, "female"  ),
     ("Emma"     , "Harvard University"                       , "1979-12-26", 6.4, "female"  );`;
 
-const update_collaborators_values = `
+const updateCollaboratorsValues = `
     update authors set Collaborator = (case
     when author_no=1 then 2
     when author_no=2 then 1
@@ -68,7 +68,7 @@ const update_collaborators_values = `
     end)
     WHERE author_no IN (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);`;
 
-    const insert_Research_Papers_values = `INSERT INTO Research_Papers
+    const insertResearchPapersValues = `INSERT INTO Research_Papers
     (paper_title,conference,publish_date) VALUES
     ("title_1","conference_1","2020-06-05 19-00-00"),
     ("title_2","conference_2","2020-06-05 19-00-00"),
@@ -100,7 +100,7 @@ const update_collaborators_values = `
     ("title_28","conference_28","2020-06-05 19-00-00"),
     ("title_29","conference_29","2020-06-05 19-00-00"),
     ("title_30","conference_30","2020-06-05 19-00-00");`;
-const insert_author_paper_values = `INSERT INTO author_paper
+const insertAuthorPaperValues = `INSERT INTO author_paper
     (author_id,paper_id)
     VALUES
     (1, 5),
@@ -122,12 +122,12 @@ const insert_author_paper_values = `INSERT INTO author_paper
     const execQuery = util.promisify(connection.query.bind(connection));
     
     try {
-         await execQuery(create_Research_Papers_table);
-         await execQuery(CREATE_author_paper_table);
-         await execQuery(insert_authors_values);
-         await execQuery(update_collaborators_values);
-         await execQuery(insert_Research_Papers_values);
-         await execQuery(insert_author_paper_values);
+      await execQuery(createResearchPapersTable);
+      await execQuery(createAuthorPaperTable);
+      await execQuery(insertAuthorsValues);
+      await execQuery(updateCollaboratorsValues);
+      await execQuery(insertResearchPapersValues);
+      await execQuery(insertAuthorPaperValues);
       connection.end();
     } catch (err) {
       console.error(err.message);
