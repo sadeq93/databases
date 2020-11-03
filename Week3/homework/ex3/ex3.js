@@ -1,43 +1,39 @@
-var prompt = require('prompt');
-var mysql      = require('mysql');
-const util = require('util');
+// while using prompt with this function you will take advantage of mySQL injection [see line 14].
+function getPopulation(Country, name, code, cb) {
+    // assuming that connection to the database is established and stored as conn
+    conn.query(
+      `SELECT Population FROM ${Country} WHERE Name = '${name}' and code = ${code}`,
+      function(err, result) {
+        if (err) cb(err);
+        if (result.length == 0) cb(new Error("Not found"));
+        cb(null, result[0].name);
+      }
+    );
+  }
+/*
+prompt: table:  country
+prompt: country:  iraq
+prompt: code:  "irq";show tables
+result ==>
+ SELECT Population FROM country WHERE Name = 'iraq' and code = "irq";show tables;
+[ RowDataPacket { Population: 23115000 } ]
+[
+  RowDataPacket { Tables_in_new_world: 'city' },
+  RowDataPacket { Tables_in_new_world: 'country' },
+  RowDataPacket { Tables_in_new_world: 'countrylanguage' }
+]
+*/
 
-const connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'hyfuser',
-  password : 'hyfpassword',
-  database : 'new_world',
-  multipleStatements: true
-});
 
-const execQuery = util.promisify(connection.query.bind(connection))
-const input = util.promisify(prompt.get.bind(this))
-
-async function queryDatabase() {
-
-    var input_name = "";
-    var input_code = "";
-    prompt.start();
-    try {
-        const result = await input(['name','code']);
-        input_name = result.name;
-        input_code = result.code;
-
-       
-        const select_query = `SELECT Population FROM Country WHERE Name = '${input_name}' and  code = '${input_code}'`
-
-        connection.connect();
-        console.log(select_query);
-        const results = await execQuery(select_query,input_name,input_code);
-       
-        for (r of results) {
-            console.log(r);
-        }
-    } catch(error) {
-        console.error(error);
-    }
-    
-    connection.end();
-}
-
-queryDatabase();
+//no longer vulnerable to SQL injection
+function getPopulation(country, name, code, cb) {
+    // assuming that connection to the database is established and stored as conn
+    conn.query(
+      `SELECT Population FROM ? WHERE Name = ? and code = ?`,[country, name, code],
+      function(err, result) {
+        if (err) cb(err);
+        if (result.length == 0) cb(new Error("Not found"));
+        cb(null, result[0].name);
+      }
+    );
+  }

@@ -20,8 +20,15 @@ const CONNECTION_CONFIG = {
 };
 
 async function seedDatabase() {
-/*
-1:- by drop (member_address,food_code,food_description) Tables 
+  /*
+
+
+1:- by make each field take one value even if the rows will repeated .
+for example :
+1 | Amit          | 325 Max park   | D00001001 | 2020-03-15  | B01        | Grand Ball Room   | C1    | Curry
+1 | Amit          | 325 Max park   | D00001001 | 2020-03-15  | B01        | Grand Ball Room   | C2    | Cake
+
+OR practical way as you will see later by drop (member_address,food_code,food_description) Tables 
 because it has multiple values in one rowe with same Data Type or not 
 e.g
 {325 Max park} in "member_address" column,
@@ -29,9 +36,26 @@ e.g
 {Curry, Cake} in "food_description" column.
 
 then :  create a different tables .
+
+2 :-
+super keys :
+- member_id OR {member_id + the rest of the columns in the table}
+- {member_id,member_name} OR {member_id,member_name + the rest of the columns in the table}
+
+candidate key :
+- member_id
+
+primary key : 
+- member_id
+
+
+3:- in this case I should design database dose not has partial dependency
+which means non-prime attribute depend on part of primary key .
+
+4- by avoiding transitive Dependency which means non-prime attribute depend on non-prime attribute.
+
 */
 
-//2:- in this case the database design is not normalized, after redesign it I will answer this question .
 
  const createAddressesTable = `
   CREATE TABLE IF NOT EXISTS Addresses (
@@ -169,18 +193,7 @@ then :  create a different tables .
  ("G1","D00001005"),
  ("P2","D00001005");`;
  
- /*
- 2 :-
-table_name       super_key       candidate_key       primary_key
 
-Address          address_id,{address_id}
-Members
-Venues
-Food
-Dinner
-Members_dinner
-Food_dinner
- */
  const connection = mysql.createConnection(CONNECTION_CONFIG);
  const execQuery = util.promisify(connection.query.bind(connection));
  try {

@@ -1,0 +1,9 @@
+1- Go to this link https://www.mongodb.com/cloud/atlas
+2- Create an account in mongoDB Atlas 
+3- Go to DATA STORAGE =>  Clusters => Build a New Cluster 
+4- Go to SECURITY => Database Access =>  Add new database user
+5- Go to SECURITY => Network Access =>  Add IP Address 
+6- Connect with mongoDB with shell Or with MongoDB Compass [I tried both of them and it's work fine]
+7- Go to mySQL after login write this code {select * into outfile 'city.csv' FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' from city;} 
+then you will get an ERROR {Error Code: 1290. The MySQL server is running with the --secure-file-priv option so it cannot execute this statement}
+9- I reach to this point and I stopped because I don't  have secure_file_Priv and till this moment I am trying to solve this problem.

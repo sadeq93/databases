@@ -10,8 +10,6 @@ const CONNECTION_CONFIG = {
 
 async function seedDatabase() {
 
-  const setAutocommit = `SET AUTOCOMMIT = 0 ;`;
-
   const startTransaction = `START TRANSACTION ;`;
 
   const updateAccountTable101 = `
@@ -30,15 +28,9 @@ async function seedDatabase() {
   (101,102,1000.00,"2020-10-31 14:17:00","for party");`;
 
   const commit = `COMMIT;`;
-
-
-
-
-
     const connection = mysql.createConnection(CONNECTION_CONFIG);
     const execQuery = util.promisify(connection.query.bind(connection));
     try {
-         await execQuery(setAutocommit);
          await execQuery(startTransaction);
          await execQuery(updateAccountTable101);
          await execQuery(updateAccountTable102);

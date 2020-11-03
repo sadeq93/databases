@@ -25,10 +25,6 @@ const createAccount_changesTable = `
   remark           VARCHAR(100)   NOT NULL
   );`;
 
-
-
-
-
     const connection = mysql.createConnection(CONNECTION_CONFIG);
     const execQuery = util.promisify(connection.query.bind(connection));
     try {
