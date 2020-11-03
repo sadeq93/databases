@@ -7,3 +7,9 @@
 7- Go to mySQL after login write this code {select * into outfile 'city.csv' FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' from city;} 
 then you will get an ERROR {Error Code: 1290. The MySQL server is running with the --secure-file-priv option so it cannot execute this statement}
 9- I reach to this point and I stopped because I don't  have secure_file_Priv and till this moment I am trying to solve this problem.
+const url = "mongodb+srv://hyfuser:hyfpassword@hyf-test.azvxc.mongodb.net/world?retryWrites=true&w=majority";
+10- I found another way to export SQL database by using "MysqlWorkBench" 
+11- import csv files to mongoDB
+12- Get url connection from Atlas 
+13- connect nodeJs after install mongoDB using npm 
+14 write the CRUD functions
